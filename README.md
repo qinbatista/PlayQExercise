@@ -1,6 +1,6 @@
-#Container Question
+# Container Question
 
-#Phantasms Question
+# Phantasms Question
 ## Intuition
 - Because multiple phantasms play in the same game, we must consider the performance first, **Job System** is a good option for parallel programming. 
 - We already know the players' behaviors from the **mid-layer data**, as long as we parsed phantasms' behavior, send the codes to the **phantasms controller**, and let phantasms do the action
