@@ -84,10 +84,9 @@ Because Unity's `Job System` doesn't accept strings, the definition of action co
 
 - The `Job System` can compute relative actions with users if we want.
 
-> For example, If some phantasms are 1000m away from users, we can disable these phantasms for saving hardware resources. It is all parallel, we can do as much computation as we can with action code here. 
+> For example, If some phantasms are 1000m away from users, we can disable these phantasms for saving hardware resources. It is all parallel, we can do as much computation as we can in job system. 
 
-## Extra Improvement(Experimental)
-The time complexity of extra users' data and SendPhantasmBehaviorEvent is O(n), and only PhantasmJob is O(1). Extra data one by one from mid-layer and given to our Job system one by one is O(n). The event System is the same, even though it looks like 1 line code, actually delegates just stack all functions and call them one by one. As phantasms will not influence users, they can be regarded as sub-scene. In this case, we can use the DOTS system to import 10,000 phantasms without any performance issues. But the DOTS system is still developing by Unity, so it might be risky.
+
 
 ## Pseudocode 
 ### PhantasmsManager
@@ -184,4 +183,7 @@ public class PhantasmController : MonoBehaviour
 }
 
 ```
+
+## Extra Improvement(Experimental)
+Only `Job System` has O(1) time complexity in the previous solution. The time complexity of extra users' data and SendPhantasmBehaviorEvent is O(n), because extra data from mid-layer and given to our Job system is done one by one is O(n) as long as it is running under `MonoBehavior`. The `event System` is the same, even though it looks like 1 line code, actually `delegates` just stack all functions and call them one by one. In this case, phantasms will not influence users, they can be regarded as sub-scene. The DOTS can be used,  with DOTS in the project which allow importing 10,000 phantasms without any performance issues. But the DOTS system is still developing by Unity, so it might be risky.
 
