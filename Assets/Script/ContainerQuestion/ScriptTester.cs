@@ -6,12 +6,13 @@ using Algorithm;
 public class ScriptTester : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Container container = new Container();
+    public Container container;
     bool value1;
     bool value2;
 
     void Start()
     {
+        container = new Container();
         bool ptr = container.Value;
         // Debug.Log(container.TestGetN());
         // unsafe

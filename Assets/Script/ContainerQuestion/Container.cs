@@ -70,10 +70,5 @@ namespace Algorithm
             get => _size;
             set => _size = value;
         }
-
-        // unsafe public int* TestGetValue()
-        // {
-        //     return &current.Value;
-        // }
     }
 }

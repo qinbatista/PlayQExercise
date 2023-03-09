@@ -1,4 +1,61 @@
 # Container Question
+## Intuition
+For the double-linked list and the head linked to the tail, the Diagrams look like the following diagram.
+![Picture](./container.png)
+
+- We only have 3 public functions from `Container`  
+- The size of the list is unknown.
+- the value is True or False.
+
+## Sotion
+I didn't find the solution to find the size of the link via 3 public functions, but I can come up with some ideas to solve the solution
+
+### Solution1
+Get the size when generation the size, the solution only needs one more variable.
+
+```CSharp
+	if (count < 1)
+	{
+		var randomGen = new 		
+		Random(DateTime.Now.Millisecond);
+		_size = randomGen.Next(1, 9999); 
+	}
+```
+
+### Solution2
+Find the memory address of the head's value. we keep forwarding until the memory address is the same as the head's value, and we found the size of the container. 
+
+### Solution3
+Track the memory heap by memory debugger from Unity. The number of nodes has a linear relationship with the size, so once I know the linear equation, I know the size of the container.
+
+# Editor Window
+```CSharp
+    private void OnGUI()
+    {
+        container = new Container();//generate the container
+        if (GUILayout.Button("Add Container"))//if Add container button clicked
+        {
+            for (int i = 0; i < container.Size; i++)
+            {
+                labels.Add($"Size:{container.Size},Value:{container.Value},Index:{i+1}");//add labels text to the list
+                container.MoveForward(); //move to next node
+            }
+        }
+        if (GUILayout.Button("Clear"))
+        {
+            labels.Clear(); //clear label list
+        }
+        // Begin the scroll view
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+        // Iterate over the labels list and display each label
+        foreach (string label in labels)
+        {
+            GUILayout.Label(label);
+        }
+        // End the scroll view
+        EditorGUILayout.EndScrollView();
+    }
+```
 
 # Phantasms Question
 ## Intuition
@@ -19,15 +76,18 @@
 ![Picture](./Concept.png)
 
 ## Action Code
-Because Unity `Job System` doesn't accept strings, the definition of action code is very important. I give an idea of how action code can be for a realistic approach.
+Because Unity's `Job System` doesn't accept strings, the definition of action code is very important. I give an idea of how action code can be for a realistic approach.
 
-- The `mid-layer` saved other players' action action masks+positions. 
+- The `mid-layer` saved other players' action masks+positions. 
 
 > For example, 5411122233, 111,222,333 is the position of (x,y,z), the 54 is the action mask. 54 means 110110 in binary, first bit 1 can be running, second bit 1 can be shooting, 3rd bit can be used first skill, and so on and so far. We can add as many actions as we want as long we can hold the data. We still can use 1 integer for position 1 integer for action if the integer is too small, it all depends.
 
 - The `Job System` can compute relative actions with users if we want.
 
 > For example, If some phantasms are 1000m away from users, we can disable these phantasms for saving hardware resources. It is all parallel, we can do as much computation as we can with action code here. 
+
+## Extra Improvement(Experimental)
+The time complexity of extra users' data and SendPhantasmBehaviorEvent is O(n), and only PhantasmJob is O(1). Extra data one by one from mid-layer and given to our Job system one by one is O(n). The event System is the same, even though it looks like 1 line code, actually delegates just stack all functions and call them one by one. As phantasms will not influence users, they can be regarded as sub-scene. In this case, we can use the DOTS system to import 10,000 phantasms without any performance issues. But the DOTS system is still developing by Unity, so it might be risky.
 
 ## Pseudocode 
 ### PhantasmsManager
@@ -89,7 +149,7 @@ public struct PhantasmsJob : IJobParallelForTransform
         //after complex parse....
         //Got users position
         Vector3 position = new Vector3(0, 0, 0); //can be ....
-        //Got users actions
+        //Got users' actions
         int actions = 25; // can be....
         //set this user's position(we can do parallel in Job system)
         transform.position = position;

@@ -19,18 +19,18 @@ public class MyWindow : EditorWindow
 
     private void OnGUI()
     {
-        container = new Container();
-        if (GUILayout.Button("Add Container"))
+        container = new Container();//generate the container
+        if (GUILayout.Button("Add Container"))//if Add container button clicked
         {
             for (int i = 0; i < container.Size; i++)
             {
-                labels.Add($"Size:{container.Size},Value:{container.Value},Index:{i+1}");
-                container.MoveForward();
+                labels.Add($"Size:{container.Size},Value:{container.Value},Index:{i+1}");//add labels text to the list
+                container.MoveForward(); //move to next node
             }
         }
         if (GUILayout.Button("Clear"))
         {
-            labels.Clear();
+            labels.Clear(); //clear label list
         }
         // Begin the scroll view
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
